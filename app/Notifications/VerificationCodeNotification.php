@@ -61,7 +61,7 @@ class VerificationCodeNotification extends Notification implements ShouldQueue
         Cache::remember(
             key: "email-{$notifiable->getKey()}",
             ttl: Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
-            callback: static fn() => $code
+            callback: static fn () => $code
         );
 
         return $code;

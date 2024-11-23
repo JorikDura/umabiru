@@ -16,7 +16,8 @@ final readonly class IndexUserAction
     public function __invoke(): LengthAwarePaginator
     {
         return QueryBuilder::for(User::class)
-            ->allowedFilters(['name'])
+            ->allowedFilters(['username'])
+            ->allowedSorts(['created_at', 'username'])
             ->with(['image'])
             ->paginate(columns: [
                 'id',

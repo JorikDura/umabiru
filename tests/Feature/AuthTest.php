@@ -67,9 +67,7 @@ describe('auth tests', function () {
         actingAs($user)
             ->postJson(
                 uri: "api/v1/auth/email/resend"
-            )
-            ->assertSuccessful()
-            ->assertNoContent();
+            )->assertSuccessful()->assertNoContent();
 
         Notification::assertSentTo($user, VerificationCodeNotification::class);
     });

@@ -22,6 +22,7 @@ services:
             - sail
         depends_on:
             - pgsql
+            - redis
     pgsql:
         image: 'postgres:17'
         ports:

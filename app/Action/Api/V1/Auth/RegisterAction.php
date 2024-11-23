@@ -6,6 +6,7 @@ namespace App\Action\Api\V1\Auth;
 
 use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 
 final readonly class RegisterAction
 {
@@ -16,6 +17,10 @@ final readonly class RegisterAction
 
     public function __invoke(): User
     {
-        return User::create($this->request->validated());
+        $user = User::create($this->request->validated());
+
+        event(new Registered($user));
+
+        return $user;
     }
 }

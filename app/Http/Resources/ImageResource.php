@@ -21,8 +21,10 @@ class ImageResource extends JsonResource
             $this->mergeWhen(!$this->relationLoaded('user'), [
                 'user_id' => $this->user_id
             ]),
-            'original_path' => $this->original_path,
-            'preview_path' => $this->preview_path
+            'original_image_url' => asset("storage/$this->original_path"),
+            'preview_image_url' => !is_null($this->preview_path)
+                ? asset("storage/$this->preview_path")
+                : asset("storage/$this->original_path")
         ];
     }
 }

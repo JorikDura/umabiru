@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Enum\Gender;
 use App\Enum\Role;
 use App\Notifications\VerificationCodeNotification;
+use App\Traits\HasComments;
+use App\Traits\HasImage;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -21,6 +20,8 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasFactory;
     use Notifiable;
     use HasApiTokens;
+    use HasImage;
+    use HasComments;
 
     protected $fillable = [
         'name',
@@ -52,20 +53,23 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    public function image(): MorphOne
-    {
-        return $this->morphOne(Image::class, 'imageable');
-    }
-
-    public function images(): MorphMany
-    {
-        return $this->morphMany(Image::class, 'imageable');
-    }
-
+    /**
+     * @return void
+     */
     public function sendEmailVerificationNotification(): void
     {
         $this->notify(new VerificationCodeNotification());
     }
 
+    /**
+     * @return ?bool
+     */
+    public function delete(): ?bool
+    {
+        $this->deleteImage();
 
+        $this->deleteComments();
+
+        return parent::delete();
+    }
 }

@@ -6,7 +6,6 @@ namespace App\Models;
 use App\Enum\Gender;
 use App\Enum\Role;
 use App\Notifications\VerificationCodeNotification;
-use App\Notifications\VerifyEmailByCode;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

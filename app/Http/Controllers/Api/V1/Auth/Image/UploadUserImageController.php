@@ -13,10 +13,10 @@ class UploadUserImageController extends Controller
 {
     /**
      * @param  UploadImageAction  $action
-     * @return void
+     * @return ImageResource
      * @throws ReflectionException
      */
-    public function __invoke(UploadImageAction $action)
+    public function __invoke(UploadImageAction $action): ImageResource
     {
         $image = $action();
 

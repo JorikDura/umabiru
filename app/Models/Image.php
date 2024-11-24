@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Traits\HasComments;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Http\UploadedFile;
@@ -66,6 +67,7 @@ class Image extends Model
     /**
      * @param  UploadedFile  $file
      * @param  Model  $model
+     * @param  User  $user
      * @param  ?string  $path
      * @return self
      * @throws ReflectionException
@@ -231,5 +233,10 @@ class Image extends Model
         return self::DEFAULT_PATH.Str::of(
             string: new ReflectionClass($type)->getShortName()
         )->plural()->lower()->toString().'/';
+    }
+
+    public function likes(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'image_likes');
     }
 }

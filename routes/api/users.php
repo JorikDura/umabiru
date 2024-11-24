@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\V1\User\Comment\DeleteUserCommentController;
 use App\Http\Controllers\Api\V1\User\Comment\IndexCommentController;
+use App\Http\Controllers\Api\V1\User\Comment\Like\LikeCommentController;
 use App\Http\Controllers\Api\V1\User\Comment\ShowUserCommentController;
 use App\Http\Controllers\Api\V1\User\Comment\StoreUserCommentController;
 use App\Http\Controllers\Api\V1\User\IndexUserController;
@@ -18,6 +19,7 @@ Route::prefix('v1/users')->group(function () {
     Route::prefix('{user}/comments')->group(function () {
         Route::get('/', IndexCommentController::class);
         Route::get('/{commentId}', ShowUserCommentController::class);
+        Route::post('/{comment}/like', LikeCommentController::class);
         Route::post('/', StoreUserCommentController::class);
         Route::delete('/{comment}', DeleteUserCommentController::class);
     });

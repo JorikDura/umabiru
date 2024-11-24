@@ -163,6 +163,7 @@ describe('users test', function () {
     });
 
     it('admin deletes another user comment', function () {
+        /** @var User $user */
         $user = $this->users->random();
 
         $comment = Comment::factory()->create([
@@ -183,6 +184,60 @@ describe('users test', function () {
         assertDatabaseMissing(
             table: 'comments',
             data: $comment->toArray()
+        );
+    });
+
+    it('like comment', function () {
+        /** @var User $user */
+        $user = $this->users->random();
+
+        $comment = Comment::factory()->create([
+            'user_id' => $user->id,
+            'commentable_id' => $user->id,
+            'commentable_type' => User::class
+        ]);
+
+        actingAs($user)
+            ->postJson(uri: "api/v1/users/$user->id/comments/$comment->id/like")
+            ->assertSuccessful()
+            ->assertSee([
+                'likes' => 1,
+            ]);
+
+        assertDatabaseHas(
+            table: 'comment_likes',
+            data: [
+                'user_id' => $user->id,
+                'comment_id' => $comment->id
+            ]
+        );
+    });
+
+    it('dislike comment', function () {
+        /** @var User $user */
+        $user = $this->users->random();
+
+        $comment = Comment::factory()->create([
+            'user_id' => $user->id,
+            'commentable_id' => $user->id,
+            'commentable_type' => User::class
+        ]);
+
+        $comment->likes()->toggle($user);
+
+        actingAs($user)
+            ->postJson(uri: "api/v1/users/$user->id/comments/$comment->id/like")
+            ->assertSuccessful()
+            ->assertSee([
+                'likes' => 0,
+            ]);
+
+        assertDatabaseMissing(
+            table: 'comment_likes',
+            data: [
+                'user_id' => $user->id,
+                'comment_id' => $comment->id
+            ]
         );
     });
 });

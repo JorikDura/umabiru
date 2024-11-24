@@ -1,10 +1,12 @@
 <?php
 
+use App\Enums\Role;
 use App\Models\Comment;
 use App\Models\User;
 
 use function Pest\Laravel\actingAs;
 use function Pest\Laravel\assertDatabaseHas;
+use function Pest\Laravel\assertDatabaseMissing;
 use function Pest\Laravel\getJson;
 
 describe('users test', function () {
@@ -122,7 +124,7 @@ describe('users test', function () {
         );
     });
 
-    it('delete user comment', function () {
+    it('delete own comment', function () {
         /** @var User $user */
         $user = $this->users->random();
 
@@ -136,5 +138,51 @@ describe('users test', function () {
             ->deleteJson(uri: "api/v1/users/$user->id/comments/$comment->id")
             ->assertSuccessful()
             ->assertNoContent();
+
+        assertDatabaseMissing(
+            table: 'comments',
+            data: $comment->toArray()
+        );
+    });
+
+    it('delete another user comment', function () {
+        /** @var User $user */
+        $user = $this->users->random();
+
+        $comment = Comment::factory()->create([
+            'user_id' => $user->id,
+            'commentable_id' => $user->id,
+            'commentable_type' => User::class
+        ]);
+
+        $newUser = User::factory()->create();
+
+        actingAs($newUser)
+            ->deleteJson(uri: "api/v1/users/$user->id/comments/$comment->id")
+            ->assertForbidden();
+    });
+
+    it('admin deletes another user comment', function () {
+        $user = $this->users->random();
+
+        $comment = Comment::factory()->create([
+            'user_id' => $user->id,
+            'commentable_id' => $user->id,
+            'commentable_type' => User::class
+        ]);
+
+        $newAdmin = User::factory()->create([
+            'role' => Role::ADMIN
+        ]);
+
+        actingAs($newAdmin)
+            ->deleteJson(uri: "api/v1/users/$user->id/comments/$comment->id")
+            ->assertSuccessful()
+            ->assertNoContent();
+
+        assertDatabaseMissing(
+            table: 'comments',
+            data: $comment->toArray()
+        );
     });
 });

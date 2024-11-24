@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use App\Enum\Gender;
-use App\Enum\Role;
+use App\Enums\Gender;
+use App\Enums\Role;
 use App\Notifications\VerificationCodeNotification;
 use App\Traits\HasComments;
 use App\Traits\HasImage;
@@ -41,7 +41,12 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the attributes that should be cast.
      *
-     * @return array<string, string>
+     * @return array{
+     *     email_verified_at: 'datetime',
+     *     password: 'hashed',
+     *     gender: 'App\Enums\Gender',
+     *     role: 'App\Enums\Role'
+     * }
      */
     protected function casts(): array
     {
@@ -71,5 +76,15 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->deleteComments();
 
         return parent::delete();
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === Role::ADMIN;
+    }
+
+    public function isModerator(): bool
+    {
+        return $this->role === Role::MODERATOR;
     }
 }

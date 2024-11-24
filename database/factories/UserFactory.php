@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\Gender;
+use App\Enums\Role;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -31,6 +33,8 @@ class UserFactory extends Factory
             'password' => fake()->password(),
             'remember_token' => Str::random(10),
             'description' => fake()->text(),
+            'role' => Role::USER,
+            'gender' => Gender::UNDEFINED
         ];
     }
 

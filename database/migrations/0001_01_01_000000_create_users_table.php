@@ -1,7 +1,7 @@
 <?php
 
-use App\Enum\Gender;
-use App\Enum\Role;
+use App\Enums\Gender;
+use App\Enums\Role;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;

@@ -18,12 +18,12 @@ class CommentResource extends JsonResource
         return [
             'id' => $this->id,
             'text' => $this->text,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-            'user' => UserResource::max(($this->whenLoaded('user'))),
+            'images' => ImageResource::collection($this->whenLoaded('images')),
+            'user' => UserResource::make(($this->whenLoaded('user'))),
             $this->mergeWhen(!$this->relationLoaded('comments'), [
                 'user_id' => $this->user_id
-            ])
+            ]),
+            'created_at' => $this->created_at
         ];
     }
 }

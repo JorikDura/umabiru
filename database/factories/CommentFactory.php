@@ -20,6 +20,7 @@ class CommentFactory extends Factory
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
             'user_id' => User::factory(),
+            'comment_id' => null,
             'commentable_id' => User::factory(),
             'commentable_type' => Comment::class,
         ];

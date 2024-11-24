@@ -17,6 +17,7 @@ class Comment extends Model
 
     protected $fillable = [
         'user_id',
+        'comment_id',
         'text',
         'commentable_id',
         'commentable_type'
@@ -30,5 +31,12 @@ class Comment extends Model
     public function comment(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function delete(): ?bool
+    {
+        $this->deleteImages();
+
+        return parent::delete();
     }
 }

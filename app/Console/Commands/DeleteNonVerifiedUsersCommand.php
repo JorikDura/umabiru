@@ -11,7 +11,7 @@ class DeleteNonVerifiedUsersCommand extends Command
 {
     protected $signature = 'delete:non-verified-users';
 
-    protected $description = 'Command description';
+    protected $description = 'Deletes unverified users';
 
     public function handle(): void
     {

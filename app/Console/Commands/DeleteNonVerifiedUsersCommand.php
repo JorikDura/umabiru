@@ -18,8 +18,6 @@ class DeleteNonVerifiedUsersCommand extends Command
         User::where('email_verified_at', null)
             ->where('updated_at', '<', now()->subDay())
             ->get()
-            ->each(function (User $user) {
-                $user->delete();
-            });
+            ->each(fn(User $user) => $user->delete());
     }
 }

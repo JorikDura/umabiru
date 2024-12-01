@@ -23,6 +23,8 @@ class CommentResource extends JsonResource
             $this->mergeWhen(!$this->relationLoaded('comments'), [
                 'user_id' => $this->user_id
             ]),
+            'likes_count' => $this->whenHas('likes_count'),
+            'is_liked' => $this->whenHas('is_liked'),
             'created_at' => $this->created_at
         ];
     }

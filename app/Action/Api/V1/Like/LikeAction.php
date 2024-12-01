@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 final readonly class LikeAction
 {
     public function __construct(
-        #[CurrentUser] private User $user
+        #[CurrentUser('sanctum')] private User $user
     ) {
     }
 

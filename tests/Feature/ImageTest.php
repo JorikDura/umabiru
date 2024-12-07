@@ -15,7 +15,7 @@ describe('image tests', function () {
 
         $image = Image::factory()->create([
             'imageable_id' => $user->id,
-            'imageable_type' => User::class
+            'imageable_type' => User::class,
         ]);
 
         actingAs($user)
@@ -29,7 +29,7 @@ describe('image tests', function () {
             table: 'image_likes',
             data: [
                 'user_id' => $user->id,
-                'image_id' => $image->id
+                'image_id' => $image->id,
             ]
         );
     });

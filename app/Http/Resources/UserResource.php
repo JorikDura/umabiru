@@ -11,7 +11,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 /**
  * @mixin User
  */
-class UserResource extends JsonResource
+final class UserResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
@@ -23,7 +23,7 @@ class UserResource extends JsonResource
             'role' => $this->role,
             'description' => $this->whenHas('description'),
             'image' => ImageResource::make($this->whenLoaded('image')),
-            'created_at' => $this->created_at
+            'created_at' => $this->created_at,
         ];
     }
 }

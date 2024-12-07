@@ -9,13 +9,8 @@ use App\Action\Api\V1\Auth\RegisterAction;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\TokenResource;
 
-class RegisterController extends Controller
+final class RegisterController extends Controller
 {
-    /**
-     * @param  RegisterAction  $registerAction
-     * @param  CreateTokenAction  $createTokenAction
-     * @return TokenResource
-     */
     public function __invoke(
         RegisterAction $registerAction,
         CreateTokenAction $createTokenAction

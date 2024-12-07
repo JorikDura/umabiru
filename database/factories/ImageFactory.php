@@ -8,7 +8,7 @@ use App\Models\Image;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ImageFactory extends Factory
+final class ImageFactory extends Factory
 {
     protected $model = Image::class;
 
@@ -17,7 +17,7 @@ class ImageFactory extends Factory
         return [
             'user_id' => User::factory(),
             'original_path' => $this->faker->word(),
-            'preview_path' => $this->faker->word()
+            'preview_path' => $this->faker->word(),
         ];
     }
 }

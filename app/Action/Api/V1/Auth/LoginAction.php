@@ -11,12 +11,8 @@ final readonly class LoginAction
 {
     public function __construct(
         private LoginRequest $request
-    ) {
-    }
+    ) {}
 
-    /**
-     * @return ?User
-     */
     public function __invoke(): ?User
     {
         auth()->attempt($this->request->validated());

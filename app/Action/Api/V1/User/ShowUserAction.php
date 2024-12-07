@@ -8,10 +8,6 @@ use App\Models\User;
 
 final readonly class ShowUserAction
 {
-    /**
-     * @param  int  $userId
-     * @return User
-     */
     public function __invoke(int $userId): User
     {
         return User::with(['image'])
@@ -24,7 +20,7 @@ final readonly class ShowUserAction
                     'gender',
                     'username',
                     'created_at',
-                    'description'
+                    'description',
                 ]
             );
     }

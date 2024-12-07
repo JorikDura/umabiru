@@ -14,11 +14,12 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Random\RandomException;
 
-class VerificationCodeNotification extends Notification implements ShouldQueue
+final class VerificationCodeNotification extends Notification implements ShouldQueue
 {
     use Queueable;
 
     private const int MIN = 1000;
+
     private const int MAX = 9999;
 
     public function via($notifiable): array
@@ -36,10 +37,6 @@ class VerificationCodeNotification extends Notification implements ShouldQueue
         return $this->buildMailMessage($code);
     }
 
-    /**
-     * @param $code
-     * @return MailMessage
-     */
     protected function buildMailMessage($code): MailMessage
     {
         return new MailMessage()
@@ -55,7 +52,6 @@ class VerificationCodeNotification extends Notification implements ShouldQueue
     protected function verificationCode($notifiable): int
     {
         /** @var User $notifiable */
-
         $code = random_int(self::MIN, self::MAX);
 
         Cache::remember(

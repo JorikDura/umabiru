@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\User;
 use App\Notifications\VerificationCodeNotification;
 use Illuminate\Support\Facades\Notification;
@@ -16,10 +18,10 @@ describe('auth tests', function () {
         $user = User::factory()->make();
 
         postJson(
-            uri: "api/v1/auth/register",
+            uri: 'api/v1/auth/register',
             data: $user->toArray() + [
                 'password' => $password = fake()->password(minLength: 8),
-                'password_confirmation' => $password
+                'password_confirmation' => $password,
             ]
         )->assertSuccessful()->assertSee(['token']);
 
@@ -28,7 +30,7 @@ describe('auth tests', function () {
             data: [
                 'email' => $user->email,
                 'name' => $user->name,
-                'username' => $user->username
+                'username' => $user->username,
             ]
         );
 
@@ -36,7 +38,7 @@ describe('auth tests', function () {
         $user = User::where([
             'email' => $user->email,
             'name' => $user->name,
-            'username' => $user->username
+            'username' => $user->username,
         ])->get();
 
         Notification::assertSentTo($user, VerificationCodeNotification::class);
@@ -45,14 +47,14 @@ describe('auth tests', function () {
     it('login user', function () {
         /** @var User $user */
         $user = User::factory()->create([
-            'password' => $password = fake()->password(minLength: 8)
+            'password' => $password = fake()->password(minLength: 8),
         ]);
 
         postJson(
-            uri: "api/v1/auth/login",
+            uri: 'api/v1/auth/login',
             data: [
                 'email' => $user->email,
-                'password' => $password
+                'password' => $password,
             ]
         )->assertSuccessful()->assertSee(['token']);
     });
@@ -66,7 +68,7 @@ describe('auth tests', function () {
 
         actingAs($user)
             ->postJson(
-                uri: "api/v1/auth/email/resend"
+                uri: 'api/v1/auth/email/resend'
             )->assertSuccessful()->assertNoContent();
 
         Notification::assertSentTo($user, VerificationCodeNotification::class);

@@ -10,14 +10,8 @@ use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Http\Response;
 
-class DeleteUserCommentController extends Controller
+final class DeleteUserCommentController extends Controller
 {
-    /**
-     * @param  User  $user
-     * @param  Comment  $comment
-     * @param  DeleteCommentAction  $action
-     * @return Response
-     */
     public function __invoke(
         User $user,
         Comment $comment,

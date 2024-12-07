@@ -10,17 +10,11 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait HasImages
 {
-    /**
-     * @return MorphMany
-     */
     public function images(): MorphMany
     {
         return $this->morphMany(Image::class, 'imageable');
     }
 
-    /**
-     * @return void
-     */
     public function deleteImages(): void
     {
         /** @var Collection<array-key, Image> $images */

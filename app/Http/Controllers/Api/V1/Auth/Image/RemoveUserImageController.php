@@ -9,16 +9,12 @@ use App\Models\User;
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\Response;
 
-class RemoveUserImageController extends Controller
+final class RemoveUserImageController extends Controller
 {
     public function __construct(
         #[CurrentUser('sanctum')] private User $user
-    ) {
-    }
+    ) {}
 
-    /**
-     * @return Response
-     */
     public function __invoke(): Response
     {
         $this->user->deleteImage();

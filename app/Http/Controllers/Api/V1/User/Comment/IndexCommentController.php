@@ -11,12 +11,9 @@ use App\Models\User;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Throwable;
 
-class IndexCommentController extends Controller
+final class IndexCommentController extends Controller
 {
     /**
-     * @param  User  $user
-     * @param  IndexCommentAction  $action
-     * @return AnonymousResourceCollection
      * @throws Throwable
      */
     public function __invoke(User $user, IndexCommentAction $action): AnonymousResourceCollection

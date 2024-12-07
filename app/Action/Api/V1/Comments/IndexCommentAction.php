@@ -21,31 +21,28 @@ final readonly class IndexCommentAction
 {
     public function __construct(
         #[CurrentUser('sanctum')] private ?User $user
-    ) {
-    }
+    ) {}
 
     /**
-     * @param  Model  $model
-     * @return LengthAwarePaginator
      * @throws Throwable
      */
     public function __invoke(Model $model): LengthAwarePaginator
     {
-        if (!method_exists($model, 'comments')) {
+        if (! method_exists($model, 'comments')) {
             MissingMethodException::create($model::class, 'comments');
         }
 
         return QueryBuilder::for(Comment::class)
             ->allowedIncludes([
                 'images',
-                AllowedInclude::callback('user', static fn (BelongsTo $query) => $query->with('image'))
+                AllowedInclude::callback('user', static fn (BelongsTo $query) => $query->with('image')),
             ])
             ->select([
                 'id',
                 'user_id',
                 'comment_id',
                 'text',
-                'created_at'
+                'created_at',
             ])
             ->selectSub(
                 query: fn (Builder $query) => $query->selectRaw('count(*)')
@@ -54,7 +51,7 @@ final readonly class IndexCommentAction
                 as: 'likes_count'
             )
             ->when(
-                value: !is_null($this->user?->id),
+                value: ! is_null($this->user?->id),
                 callback: fn (EloquentBuilder $query) => $query->selectSub(
                     query: fn (Builder $query) => $query
                         ->selectRaw('case count(*) when 0 then false else true end')
@@ -68,7 +65,7 @@ final readonly class IndexCommentAction
             )
             ->where([
                 'commentable_id' => $model->getKey(),
-                'commentable_type' => $model::class
+                'commentable_type' => $model::class,
             ])
             ->orderByDesc('created_at')
             ->paginate()

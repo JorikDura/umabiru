@@ -9,17 +9,11 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 trait HasImage
 {
-    /**
-     * @return MorphOne
-     */
     public function image(): MorphOne
     {
         return $this->morphOne(Image::class, 'imageable');
     }
 
-    /**
-     * @return void
-     */
     public function deleteImage(): void
     {
         /** @var ?Image $image */

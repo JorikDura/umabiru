@@ -12,8 +12,6 @@ final readonly class CreateTokenAction
 
     /**
      * Generate a token for user.
-     * @param  User  $user
-     * @return string
      */
     public function __invoke(User $user): string
     {

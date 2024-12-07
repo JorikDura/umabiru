@@ -17,19 +17,16 @@ final readonly class UploadImageAction
     public function __construct(
         private UploadImageRequest $request,
         #[CurrentUser('sanctum')] private User $user
-    ) {
-    }
+    ) {}
 
     /**
-     * @param  ?Model  $model
-     * @return Image
      * @throws ReflectionException
      */
     public function __invoke(?Model $model = null): Image
     {
         $model ??= $this->user;
 
-        if (!method_exists($model, 'image') && !method_exists($model, 'deleteImage')) {
+        if (! method_exists($model, 'image') && ! method_exists($model, 'deleteImage')) {
             MissingMethodException::create($model::class, 'comments');
         }
 

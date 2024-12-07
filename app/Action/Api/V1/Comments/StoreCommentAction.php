@@ -19,17 +19,14 @@ final readonly class StoreCommentAction
     public function __construct(
         private StoreCommentRequest $request,
         #[CurrentUser('sanctum')] private User $user
-    ) {
-    }
+    ) {}
 
     /**
-     * @param  Model  $model
-     * @return Comment
      * @throws Throwable
      */
     public function __invoke(Model $model): Comment
     {
-        if (!method_exists($model, 'comments')) {
+        if (! method_exists($model, 'comments')) {
             MissingMethodException::create($model::class, 'comments');
         }
 
@@ -39,7 +36,7 @@ final readonly class StoreCommentAction
                 'comment_id' => $this->request->validated('comment_id'),
                 'text' => $this->request->validated('text'),
                 'commentable_id' => $model->getKey(),
-                'commentable_type' => $model::class
+                'commentable_type' => $model::class,
             ]);
 
             $this->request->whenHas('images', function () use ($comment) {

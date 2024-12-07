@@ -10,13 +10,9 @@ use App\Http\Resources\CommentResource;
 use App\Models\User;
 use Throwable;
 
-class ShowUserCommentController extends Controller
+final class ShowUserCommentController extends Controller
 {
     /**
-     * @param  User  $user
-     * @param  int  $commentId
-     * @param  ShowCommentAction  $action
-     * @return CommentResource
      * @throws Throwable
      */
     public function __invoke(

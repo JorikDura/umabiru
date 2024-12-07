@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Enums\Role;
 use App\Models\Comment;
 use App\Models\User;
@@ -18,13 +20,13 @@ describe('users test', function () {
         /** @var User $user */
         $user = $this->users->random();
 
-        getJson(uri: "api/v1/users")
+        getJson(uri: 'api/v1/users')
             ->assertSuccessful()->assertSee([
                 'id' => $user->id,
                 'name' => $user->name,
                 'username' => $user->username,
                 'gender' => $user->gender,
-                'role' => $user->role
+                'role' => $user->role,
             ]);
     });
 
@@ -38,7 +40,7 @@ describe('users test', function () {
                 'name' => $user->name,
                 'username' => $user->username,
                 'gender' => $user->gender,
-                'role' => $user->role
+                'role' => $user->role,
             ]);
     });
 
@@ -53,7 +55,7 @@ describe('users test', function () {
                 'name' => $user->name,
                 'username' => $user->username,
                 'gender' => $user->gender,
-                'role' => $user->role
+                'role' => $user->role,
             ]);
     });
 
@@ -63,7 +65,7 @@ describe('users test', function () {
 
         $comments = Comment::factory(3)->create([
             'commentable_id' => $user->id,
-            'commentable_type' => User::class
+            'commentable_type' => User::class,
         ]);
 
         /** @var Comment $comment */
@@ -72,7 +74,7 @@ describe('users test', function () {
         getJson(uri: "api/v1/users/$user->id/comments")
             ->assertSuccessful()->assertSee([
                 'id' => $comment->id,
-                'text' => $comment->text
+                'text' => $comment->text,
             ]);
     });
 
@@ -82,7 +84,7 @@ describe('users test', function () {
 
         $comments = Comment::factory(3)->create([
             'commentable_id' => $user->id,
-            'commentable_type' => User::class
+            'commentable_type' => User::class,
         ]);
 
         /** @var Comment $comment */
@@ -91,7 +93,7 @@ describe('users test', function () {
         getJson(uri: "api/v1/users/$user->id/comments/$comment->id")
             ->assertSuccessful()->assertSee([
                 'id' => $comment->id,
-                'text' => $comment->text
+                'text' => $comment->text,
             ]);
     });
 
@@ -101,7 +103,7 @@ describe('users test', function () {
 
         $comment = Comment::factory()->make([
             'commentable_id' => $user->id,
-            'commentable_type' => User::class
+            'commentable_type' => User::class,
         ]);
 
         actingAs($user)
@@ -111,7 +113,7 @@ describe('users test', function () {
             )
             ->assertSuccessful()
             ->assertSee([
-                'text' => $comment->text
+                'text' => $comment->text,
             ]);
 
         assertDatabaseHas(
@@ -119,7 +121,7 @@ describe('users test', function () {
             data: [
                 'text' => $comment->text,
                 'commentable_id' => $comment->commentable_id,
-                'commentable_type' => $comment->commentable_type
+                'commentable_type' => $comment->commentable_type,
             ]
         );
     });
@@ -131,7 +133,7 @@ describe('users test', function () {
         $comment = Comment::factory()->create([
             'user_id' => $user->id,
             'commentable_id' => $user->id,
-            'commentable_type' => User::class
+            'commentable_type' => User::class,
         ]);
 
         actingAs($user)
@@ -152,7 +154,7 @@ describe('users test', function () {
         $comment = Comment::factory()->create([
             'user_id' => $user->id,
             'commentable_id' => $user->id,
-            'commentable_type' => User::class
+            'commentable_type' => User::class,
         ]);
 
         $newUser = User::factory()->create();
@@ -169,11 +171,11 @@ describe('users test', function () {
         $comment = Comment::factory()->create([
             'user_id' => $user->id,
             'commentable_id' => $user->id,
-            'commentable_type' => User::class
+            'commentable_type' => User::class,
         ]);
 
         $newAdmin = User::factory()->create([
-            'role' => Role::ADMIN
+            'role' => Role::ADMIN,
         ]);
 
         actingAs($newAdmin)
@@ -194,7 +196,7 @@ describe('users test', function () {
         $comment = Comment::factory()->create([
             'user_id' => $user->id,
             'commentable_id' => $user->id,
-            'commentable_type' => User::class
+            'commentable_type' => User::class,
         ]);
 
         actingAs($user)
@@ -208,7 +210,7 @@ describe('users test', function () {
             table: 'comment_likes',
             data: [
                 'user_id' => $user->id,
-                'comment_id' => $comment->id
+                'comment_id' => $comment->id,
             ]
         );
     });
@@ -220,7 +222,7 @@ describe('users test', function () {
         $comment = Comment::factory()->create([
             'user_id' => $user->id,
             'commentable_id' => $user->id,
-            'commentable_type' => User::class
+            'commentable_type' => User::class,
         ]);
 
         $comment->likes()->toggle($user);
@@ -236,7 +238,7 @@ describe('users test', function () {
             table: 'comment_likes',
             data: [
                 'user_id' => $user->id,
-                'comment_id' => $comment->id
+                'comment_id' => $comment->id,
             ]
         );
     });

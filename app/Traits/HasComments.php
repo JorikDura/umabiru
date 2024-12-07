@@ -10,17 +10,11 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 trait HasComments
 {
-    /**
-     * @return MorphMany
-     */
     public function comments(): MorphMany
     {
         return $this->morphMany(Comment::class, 'commentable');
     }
 
-    /**
-     * @return void
-     */
     public function deleteComments(): void
     {
         /** @var Collection<array-key, Comment> $comments */

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
-class Comment extends Model
+final class Comment extends Model
 {
     use HasFactory;
     use HasImages;
@@ -21,7 +21,7 @@ class Comment extends Model
         'comment_id',
         'text',
         'commentable_id',
-        'commentable_type'
+        'commentable_type',
     ];
 
     public function user(): BelongsTo

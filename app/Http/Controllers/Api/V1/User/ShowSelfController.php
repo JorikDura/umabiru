@@ -9,16 +9,15 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Container\Attributes\CurrentUser;
 
-class ShowSelfController extends Controller
+final class ShowSelfController extends Controller
 {
     public function __construct(
         #[CurrentUser('sanctum')] private readonly User $user
     ) {
         $user->load([
-            'image'
+            'image',
         ]);
     }
-
 
     public function __invoke()
     {

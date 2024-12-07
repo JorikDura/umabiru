@@ -7,7 +7,7 @@ namespace App\Console\Commands;
 use App\Models\User;
 use Illuminate\Console\Command;
 
-class DeleteNonVerifiedUsersCommand extends Command
+final class DeleteNonVerifiedUsersCommand extends Command
 {
     protected $signature = 'delete:non-verified-users';
 

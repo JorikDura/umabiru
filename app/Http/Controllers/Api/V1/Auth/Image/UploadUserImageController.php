@@ -9,11 +9,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ImageResource;
 use ReflectionException;
 
-class UploadUserImageController extends Controller
+final class UploadUserImageController extends Controller
 {
     /**
-     * @param  UploadImageAction  $action
-     * @return ImageResource
      * @throws ReflectionException
      */
     public function __invoke(UploadImageAction $action): ImageResource

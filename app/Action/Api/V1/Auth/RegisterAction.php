@@ -12,8 +12,7 @@ final readonly class RegisterAction
 {
     public function __construct(
         private RegisterRequest $request
-    ) {
-    }
+    ) {}
 
     public function __invoke(): User
     {

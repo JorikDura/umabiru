@@ -17,59 +17,30 @@ use Intervention\Image\Laravel\Facades\Image as InterventionImage;
 use ReflectionClass;
 use ReflectionException;
 
-class Image extends Model
+final class Image extends Model
 {
-    use HasFactory;
     use HasComments;
+    use HasFactory;
 
     private const int DEFAULT_MIN_HEIGHT = 500;
+
     private const int DEFAULT_MIN_WIDTH = 500;
+
     private const int DEFAULT_NAME_SIZE = 6;
+
     private const string DEFAULT_PATH = 'images/';
 
     public $timestamps = false;
+
     protected $fillable = [
         'user_id',
         'original_path',
         'preview_path',
         'imageable_id',
-        'imageable_type'
+        'imageable_type',
     ];
 
-    public function user(): HasOne
-    {
-        return $this->hasOne(User::class);
-    }
-
-    public function image(): MorphTo
-    {
-        return $this->morphTo();
-    }
-
-    public function delete(): ?bool
-    {
-        $this->deleteImagesInStorage();
-
-        return parent::delete();
-    }
-
-    public function deleteImagesInStorage(): void
-    {
-        Storage::disk('public')
-            ->delete($this->original_path);
-
-        if (!is_null($this->preview_path)) {
-            Storage::disk('public')
-                ->delete($this->preview_path);
-        }
-    }
-
     /**
-     * @param  UploadedFile  $file
-     * @param  Model  $model
-     * @param  User  $user
-     * @param  ?string  $path
-     * @return self
      * @throws ReflectionException
      */
     public static function create(
@@ -93,7 +64,7 @@ class Image extends Model
             'imageable_id' => $model->getKey(),
             'imageable_type' => $model::class,
             'original_path' => $names['original'],
-            'preview_path' => $names['preview']
+            'preview_path' => $names['preview'],
         ]);
 
         self::storeImageToDisk(
@@ -105,11 +76,6 @@ class Image extends Model
     }
 
     /**
-     * @param  array  $files
-     * @param  Model  $model
-     * @param  User  $user
-     * @param  ?string  $path
-     * @return void
      * @throws ReflectionException
      */
     public static function insert(
@@ -120,7 +86,7 @@ class Image extends Model
     ): void {
         $result = [
             'data' => [],
-            'images' => []
+            'images' => [],
         ];
 
         foreach ($files as $file) {
@@ -141,7 +107,7 @@ class Image extends Model
                 'imageable_id' => $model->getKey(),
                 'imageable_type' => $model::class,
                 'original_path' => $names['original'],
-                'preview_path' => $names['preview']
+                'preview_path' => $names['preview'],
             ];
             $result['images'][] = $image;
         }
@@ -152,20 +118,47 @@ class Image extends Model
             self::storeImageToDisk(
                 names: [
                     'original' => $result['data'][$i]['original_path'],
-                    'preview' => $result['data'][$i]['preview_path']
+                    'preview' => $result['data'][$i]['preview_path'],
                 ],
                 image: $result['images'][$i]
             );
         }
     }
 
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class);
+    }
+
+    public function image(): MorphTo
+    {
+        return $this->morphTo();
+    }
+
+    public function delete(): ?bool
+    {
+        $this->deleteImagesInStorage();
+
+        return parent::delete();
+    }
+
+    public function deleteImagesInStorage(): void
+    {
+        Storage::disk('public')
+            ->delete($this->original_path);
+
+        if (! is_null($this->preview_path)) {
+            Storage::disk('public')
+                ->delete($this->preview_path);
+        }
+    }
+
+    public function likes(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'image_likes');
+    }
+
     /**
-     *
-     * @param  ?string  $path
-     * @param  string  $model
-     * @param  mixed  $image
-     * @param  string  $extension
-     * @return array
      * @throws ReflectionException
      */
     private static function transformName(
@@ -182,25 +175,16 @@ class Image extends Model
             'original' => "$path$name.$extension",
             'preview' => self::shouldScale($image)
                 ? "$path$name-scaled.$extension"
-                : null
+                : null,
         ];
     }
 
-    /**
-     * @param $image
-     * @return bool
-     */
     private static function shouldScale($image): bool
     {
         return ($image->height() > self::DEFAULT_MIN_HEIGHT)
             || ($image->width() > self::DEFAULT_MIN_WIDTH);
     }
 
-    /**
-     * @param  array  $names
-     * @param  mixed  $image
-     * @return void
-     */
     private static function storeImageToDisk(
         array $names,
         mixed $image
@@ -211,7 +195,7 @@ class Image extends Model
                 contents: $image->encodeByMediaType()
             );
 
-        if (!is_null($names['preview'])) {
+        if (! is_null($names['preview'])) {
             $image = $image->scale(
                 height: self::DEFAULT_MIN_HEIGHT,
                 width: self::DEFAULT_MIN_WIDTH
@@ -233,10 +217,5 @@ class Image extends Model
         return self::DEFAULT_PATH.Str::of(
             string: new ReflectionClass($type)->getShortName()
         )->plural()->lower()->toString().'/';
-    }
-
-    public function likes(): BelongsToMany
-    {
-        return $this->belongsToMany(User::class, 'image_likes');
     }
 }

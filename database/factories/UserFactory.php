@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Enums\Gender;
@@ -11,7 +13,7 @@ use Illuminate\Support\Str;
 /**
  * @extends Factory<User>
  */
-class UserFactory extends Factory
+final class UserFactory extends Factory
 {
     /**
      * The current password being used by the factory.
@@ -34,7 +36,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'description' => fake()->text(),
             'role' => Role::USER,
-            'gender' => Gender::UNDEFINED
+            'gender' => Gender::UNDEFINED,
         ];
     }
 

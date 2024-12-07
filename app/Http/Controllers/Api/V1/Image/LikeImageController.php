@@ -9,13 +9,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\LikeResource;
 use App\Models\Image;
 
-class LikeImageController extends Controller
+final class LikeImageController extends Controller
 {
-    /**
-     * @param  Image  $image
-     * @param  LikeAction  $action
-     * @return LikeResource
-     */
     public function __invoke(Image $image, LikeAction $action): LikeResource
     {
         $likeCount = $action($image);

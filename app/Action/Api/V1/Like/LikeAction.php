@@ -13,12 +13,11 @@ final readonly class LikeAction
 {
     public function __construct(
         #[CurrentUser('sanctum')] private User $user
-    ) {
-    }
+    ) {}
 
     public function __invoke(Model $model): int
     {
-        if (!method_exists($model, 'likes')) {
+        if (! method_exists($model, 'likes')) {
             MissingMethodException::create($model::class, 'likes');
         }
 

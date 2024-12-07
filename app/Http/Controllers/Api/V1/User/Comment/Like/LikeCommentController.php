@@ -10,7 +10,7 @@ use App\Http\Resources\LikeResource;
 use App\Models\Comment;
 use App\Models\User;
 
-class LikeCommentController extends Controller
+final class LikeCommentController extends Controller
 {
     public function __invoke(
         User $user,

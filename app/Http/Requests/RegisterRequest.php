@@ -8,7 +8,7 @@ use App\Enums\Gender;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class RegisterRequest extends FormRequest
+final class RegisterRequest extends FormRequest
 {
     public function rules(): array
     {
@@ -17,7 +17,7 @@ class RegisterRequest extends FormRequest
             'username' => ['required', 'string', 'min:3', 'max:48', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'gender' => ['nullable', Rule::enum(Gender::class)]
+            'gender' => ['nullable', Rule::enum(Gender::class)],
         ];
     }
 }

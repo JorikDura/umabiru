@@ -11,13 +11,8 @@ use App\Http\Resources\TokenResource;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class LoginController extends Controller
+final class LoginController extends Controller
 {
-    /**
-     * @param  LoginAction  $loginAction
-     * @param  CreateTokenAction  $createTokenAction
-     * @return TokenResource|JsonResponse
-     */
     public function __invoke(
         LoginAction $loginAction,
         CreateTokenAction $createTokenAction
@@ -27,7 +22,7 @@ class LoginController extends Controller
         if (is_null($user)) {
             return response()->json(
                 data: [
-                    'message' => 'These credentials do not match our records.'
+                    'message' => 'These credentials do not match our records.',
                 ],
                 status: Response::HTTP_UNPROCESSABLE_ENTITY
             );

@@ -10,9 +10,6 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 final readonly class IndexUserAction
 {
-    /**
-     * @return LengthAwarePaginator
-     */
     public function __invoke(): LengthAwarePaginator
     {
         return QueryBuilder::for(User::class)
@@ -25,7 +22,7 @@ final readonly class IndexUserAction
                 'username',
                 'role',
                 'gender',
-                'created_at'
+                'created_at',
             ]);
     }
 }

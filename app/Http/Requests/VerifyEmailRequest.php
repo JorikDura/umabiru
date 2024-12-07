@@ -6,12 +6,12 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class VerifyEmailRequest extends FormRequest
+final class VerifyEmailRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'code' => ['required', 'max:4']
+            'code' => ['required', 'max:4'],
         ];
     }
 }

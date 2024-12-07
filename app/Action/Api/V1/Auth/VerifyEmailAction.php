@@ -15,19 +15,17 @@ final readonly class VerifyEmailAction
     public function __construct(
         private VerifyEmailRequest $request,
         #[CurrentUser('sanctum')] private User $user
-    ) {
-    }
+    ) {}
 
     /**
      * Verify user email
-     * @return void
      */
     public function __invoke(): void
     {
         abort_if(
             boolean: $this->user->hasVerifiedEmail(),
             code: Response::HTTP_BAD_REQUEST,
-            message: "You already verified your email address."
+            message: 'You already verified your email address.'
         );
 
         /** @var int $userCode */
@@ -39,7 +37,7 @@ final readonly class VerifyEmailAction
         abort_if(
             boolean: $userCode !== $trueCode,
             code: Response::HTTP_BAD_REQUEST,
-            message: "Wrong verification code."
+            message: 'Wrong verification code.'
         );
 
         $this->user->markEmailAsVerified();

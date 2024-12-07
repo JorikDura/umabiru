@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\Gender;
@@ -14,14 +16,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements MustVerifyEmail
+final class User extends Authenticatable implements MustVerifyEmail
 {
+    use HasApiTokens;
+
+    use HasComments;
     /** @use HasFactory<UserFactory> */
     use HasFactory;
-    use Notifiable;
-    use HasApiTokens;
     use HasImage;
-    use HasComments;
+    use Notifiable;
 
     protected $fillable = [
         'name',
@@ -30,7 +33,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'gender',
         'role',
-        'description'
+        'description',
     ];
 
     protected $hidden = [
@@ -38,37 +41,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
     ];
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array{
-     *     email_verified_at: 'datetime',
-     *     password: 'hashed',
-     *     gender: 'App\Enums\Gender',
-     *     role: 'App\Enums\Role'
-     * }
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'gender' => Gender::class,
-            'role' => Role::class
-        ];
-    }
-
-    /**
-     * @return void
-     */
     public function sendEmailVerificationNotification(): void
     {
         $this->notify(new VerificationCodeNotification());
     }
 
-    /**
-     * @return ?bool
-     */
     public function delete(): ?bool
     {
         $this->deleteImage();
@@ -86,5 +63,25 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isModerator(): bool
     {
         return $this->role === Role::MODERATOR;
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array{
+     *     email_verified_at: 'datetime',
+     *     password: 'hashed',
+     *     gender: 'App\Enums\Gender',
+     *     role: 'App\Enums\Role'
+     * }
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'gender' => Gender::class,
+            'role' => Role::class,
+        ];
     }
 }
